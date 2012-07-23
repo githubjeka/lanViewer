@@ -5,10 +5,12 @@ View information on a computer hardware
 #### Installation
 1. Create a folder modules / lanViewer and copy the contents of the repository.
 2. Just add the code in the configuration file:
+
 `'modules'=>array(
     'lanViewer',
     ...
 ),`
+
 3.Module is accessed here http://youwebsite/index.php?r=lanViewer
 
 #### Using
