@@ -2,7 +2,7 @@
 /**
  *
  */
-abstract class ComputerForm extends CFormModel
+class ComputerForm extends CFormModel
 {
     public $computer;
 
@@ -13,18 +13,11 @@ abstract class ComputerForm extends CFormModel
         );
     }
 
-    public function getComObject($computer=null)
+    public function getComObject($computer = null)
     {
-        if ($computer===null) {
-            $computer=$this->computer;
+        if ($computer === null) {
+            $computer = $this->computer;
         }
         return new COM ('winmgmts:{impersonationLevel=impersonate}//' . $computer . '/root/cimv2');
     }
-
-    /**
-     * @abstract
-     * @param $comObject
-     * @return mixed
-     */
-    abstract public static function scan($comObject);
 }

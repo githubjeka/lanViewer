@@ -9,8 +9,6 @@
  * @property string $Keyboard
  * @property string $PointingDevice
  *
- * The followings are the available model relations:
- * @property Computers $comp
  */
 class InputDevice extends ComputerForm
 {
@@ -27,22 +25,22 @@ class InputDevice extends ComputerForm
         );
     }
 
-    public static function scan($comObject)
+    public function scan($comObject)
     {
-        $var=array();
-        foreach ($comObject->instancesof('Win32_Keyboard') as $device ) {
-            if($device->Status=='OK') {
-                $var[0]['id']=0;
-                $var[0]['keyboard']=$device->Name;
+        $var = array();
+        foreach ($comObject->instancesof('Win32_Keyboard') as $device) {
+            if ($device->Status == 'OK') {
+                $var[0]['id'] = 0;
+                $var[0]['keyboard'] = $device->Name;
                 break;
             }
         }
-        foreach ($comObject->instancesof('Win32_PointingDevice') as $device ) {
-            if($device->Status=='OK') {
-                $var[0]['pointingDevice']=$device->Name;
+        foreach ($comObject->instancesof('Win32_PointingDevice') as $device) {
+            if ($device->Status == 'OK') {
+                $var[0]['pointingDevice'] = $device->Name;
                 break;
             }
         }
-        return new CArrayDataProvider($var,array('keyField'=>'id'));
+        return new CArrayDataProvider($var, array('keyField' => 'id'));
     }
 }

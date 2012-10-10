@@ -10,9 +10,6 @@
  * @property string $Manufacturer_motherboards
  * @property string $SerialNumber_motherboards
  * @property string $Version_motherboards
- *
- * The followings are the available model relations:
- * @property Computers $comp
  */
 class Motherboards extends ComputerForm
 {
@@ -28,18 +25,18 @@ class Motherboards extends ComputerForm
         );
     }
 
-    public static function scan($comObject)
+    public function scan($comObject)
     {
-        $i=0;
-        $var=array();
+        $i = 0;
+        $var = array();
         foreach ($comObject->instancesof('Win32_BaseBoard') as $baseBoard) {
-            $var[$i]['id']="$i";
-            $var[$i]['name']=$baseBoard->Product;
-            $var[$i]['manufacturer']=$baseBoard->Manufacturer;
-            $var[$i]['version']=$baseBoard->Version;
-            $var[$i]['serialNumber']=$baseBoard->SerialNumber;
+            $var[$i]['id'] = "$i";
+            $var[$i]['name'] = $baseBoard->Product;
+            $var[$i]['manufacturer'] = $baseBoard->Manufacturer;
+            $var[$i]['version'] = $baseBoard->Version;
+            $var[$i]['serialNumber'] = $baseBoard->SerialNumber;
             $i++;
         }
-        return new CArrayDataProvider($var,array('keyField'=>'id'));
+        return new CArrayDataProvider($var, array('keyField' => 'id'));
     }
 }

@@ -1,6 +1,7 @@
 <?php
-
-
+/**
+ * @property string Capabilities
+ */
 class CdDrives extends ComputerForm
 {
     public function attributeLabels()
@@ -20,49 +21,50 @@ class CdDrives extends ComputerForm
         );
     }
 
-    protected function afterScan() {
-        $temp = explode(',',$this->Capabilities);
-        $this->Capabilities='';
+    protected function afterScan()
+    {
+        $temp = explode(',', $this->Capabilities);
+        $this->Capabilities = '';
         foreach ($temp as $val) {
             switch ($val) {
                 case 0:
-                    $this->Capabilities.='Некорректная информация. ';
+                    $this->Capabilities .= 'Некорректная информация. ';
                     break;
                 case 1:
-                    $this->Capabilities.='Разные. ';
+                    $this->Capabilities .= 'Разные. ';
                     break;
                 case 2:
-                    $this->Capabilities.='Последовательный доступ. ';
+                    $this->Capabilities .= 'Последовательный доступ. ';
                     break;
                 case 3:
-                    $this->Capabilities.='Случайный доступ. ';
+                    $this->Capabilities .= 'Случайный доступ. ';
                     break;
                 case 4:
-                    $this->Capabilities.='Поддерживает запись. ';
+                    $this->Capabilities .= 'Поддерживает запись. ';
                     break;
                 case 5:
-                    $this->Capabilities.='Шифрование. ';
+                    $this->Capabilities .= 'Шифрование. ';
                     break;
                 case 6:
-                    $this->Capabilities.='Сжатие. ';
+                    $this->Capabilities .= 'Сжатие. ';
                     break;
                 case 7:
-                    $this->Capabilities.='Поддерживает сменные носители. ';
+                    $this->Capabilities .= 'Поддерживает сменные носители. ';
                     break;
                 case 8:
-                    $this->Capabilities.='Ручная очистка. ';
+                    $this->Capabilities .= 'Ручная очистка. ';
                     break;
                 case 9:
-                    $this->Capabilities.='Автоматическая очистка. ';
+                    $this->Capabilities .= 'Автоматическая очистка. ';
                     break;
                 case 10:
-                    $this->Capabilities.='Предупреждение SMART. ';
+                    $this->Capabilities .= 'Предупреждение SMART. ';
                     break;
                 case 11:
-                    $this->Capabilities.='Поддержка двусторонних носителей. ';
+                    $this->Capabilities .= 'Поддержка двусторонних носителей. ';
                     break;
                 case 12:
-                    $this->Capabilities.='Предварительное размонтирование не требуется. ';
+                    $this->Capabilities .= 'Предварительное размонтирование не требуется. ';
                     break;
             }
         }
@@ -70,24 +72,26 @@ class CdDrives extends ComputerForm
 
     public static function scan($comObject)
     {
-        $i=0;
-        foreach ($comObject->instancesof('Win32_CDROMDrive') as $drive ) {
-            $var[$i]['id']="$i";
-            $var[$i]['name']=$drive->Name;
-            $var[$i]['label']=$drive->Drive;
+        $i = 0;
+        $var = array();
+        foreach ($comObject->instancesof('Win32_CDROMDrive') as $drive) {
+            $var[$i]['id'] = "$i";
+            $var[$i]['name'] = $drive->Name;
+            $var[$i]['label'] = $drive->Drive;
+            $temp = array();
             foreach ($drive->Capabilities as $capabilities) {
-                $temp[]=$capabilities;
+                $temp[] = $capabilities;
             }
-            $var[$i]['capabilities']=implode(',', $temp);
-            unset ($capabilities,$temp);
-            $var[$i]['manufacturer']=$drive->Manufacturer;
-            $var[$i]['description']=$drive->Description;
-            $var[$i]['SCSIBus']=$drive->SCSIBus;
-            $var[$i]['SCSILogicalUnit']=$drive->SCSILogicalUnit;
-            $var[$i]['SCSIPort']=$drive->SCSIPort;
-            $var[$i]['SCSITargetId']=$drive->SCSITargetId;
+            $var[$i]['capabilities'] = implode(',', $temp);
+            unset ($capabilities, $temp);
+            $var[$i]['manufacturer'] = $drive->Manufacturer;
+            $var[$i]['description'] = $drive->Description;
+            $var[$i]['SCSIBus'] = $drive->SCSIBus;
+            $var[$i]['SCSILogicalUnit'] = $drive->SCSILogicalUnit;
+            $var[$i]['SCSIPort'] = $drive->SCSIPort;
+            $var[$i]['SCSITargetId'] = $drive->SCSITargetId;
             $i++;
         }
-        return new CArrayDataProvider($var,array('keyField'=>'id'));
+        return new CArrayDataProvider($var, array('keyField' => 'id'));
     }
 }

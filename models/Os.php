@@ -10,35 +10,33 @@
  * @property string $os_product_key
  * @property integer $date_install
  * @property string $Path
- *
- * The followings are the available model relations:
- * @property Computers $comp
  */
 class Os extends ComputerForm
 {
     public function attributeLabels()
-	{
-		return array(
-			'id' => 'ID',
-			'comp_id' => 'Comp',
-			'os_name' => 'Наименование',
-			'os_product_key' => 'Серийный ключ',
-			'date_install' => 'Дата установки',
-			'Path' => 'Путь к папке Windows',
-		);
-	}
-
-    public static  function scan($comObject)
     {
-        $i=0;
+        return array(
+            'id' => 'ID',
+            'comp_id' => 'Comp',
+            'os_name' => 'Наименование',
+            'os_product_key' => 'Серийный ключ',
+            'date_install' => 'Дата установки',
+            'Path' => 'Путь к папке Windows',
+        );
+    }
+
+    public function scan($comObject)
+    {
+        $i = 0;
+        $var = array();
         foreach ($comObject->instancesof('Win32_OperatingSystem') as $operatingSystem) {
-            $var[$i]['id']="$i";
-            $var[$i]['name']=$operatingSystem->Name;
-            $var[$i]['installDate']=$operatingSystem->InstallDate;
-            $var[$i]['windowsDirectory']=$operatingSystem->windowsDirectory;
-            $var[$i]['serialNumber']=$operatingSystem->SerialNumber;
+            $var[$i]['id'] = "$i";
+            $var[$i]['name'] = $operatingSystem->Name;
+            $var[$i]['installDate'] = $operatingSystem->InstallDate;
+            $var[$i]['windowsDirectory'] = $operatingSystem->windowsDirectory;
+            $var[$i]['serialNumber'] = $operatingSystem->SerialNumber;
             $i++;
         }
-        return new CArrayDataProvider($var,array('keyField'=>'id'));
+        return new CArrayDataProvider($var, array('keyField' => 'id'));
     }
 }
